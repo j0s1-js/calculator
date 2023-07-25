@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <title>网页计算器</title>
+    <script type="text/javascript" src="js/vue.min.js"></script>
+    <link rel="stylesheet" href="css/index.css" type="text/css" />
+    <link rel="shortcut icon" href="image/favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+    <div id="root">
+        <div class="container border-round bg-grey">
+            <div class="text-align-right border-round bg-white">
+                <span class="font-size-small">{{formula}}</span><br>
+                <span class="font-size-big">{{result}}</span>
+            </div>
+            <div class="calc">
+                <button class="bg-orange white" @click="clear">AC</button>
+                <button class="bg-white" @click="inputNumber">0</button>
+                <button class="bg-white" @click="inoutOperator">*</button>
+                <button class="bg-white" @click="inoutOperator">/</button><br>
+                <button class="bg-white" @click="inputNumber">7</button>
+                <button class="bg-white" @click="inputNumber">8</button>
+                <button class="bg-white" @click="inputNumber">9</button>
+                <button class="bg-white" @click="inoutOperator">+</button><br>
+                <button class="bg-white" @click="inputNumber">4</button>
+                <button class="bg-white" @click="inputNumber">5</button>
+                <button class="bg-white" @click="inputNumber">6</button>
+                <button class="bg-white" @click="inoutOperator">-</button><br>
+                <button class="bg-white" @click="inputNumber">1</button>
+                <button class="bg-white" @click="inputNumber">2</button>
+                <button class="bg-white" @click="inputNumber">3</button>
+                <button class="bg-blue white" @click="equal">=</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                formula: '0',
+                result: 0
+            },
+            methods: {
+                clear() {
+                    this.formula = '0'
+                    this.result = 0
+                },
+                inputNumber(e) {
+                    const formula = e.target.innerText;
+                    if(this.formula === '0')
+                        this.formula = formula;
+                    else
+                        this.formula += formula;
+                },
+                inoutOperator(e) {
+                    const formula = e.target.innerText;
+                    const lastChar = this.formula.substr(this.formula.length-1, 1)
+                    if(lastChar >= '0' && lastChar <= '9')
+                        this.formula += formula;
+                    else if(lastChar == '+' || lastChar == '-' || lastChar == '*' || lastChar == '/')
+                        this.formula = this.formula.substr(0, this.formula.length - 1) + formula
+                },
+                equal() {
+                    try {
+                        this.result = eval(this.formula);
+                        this.formula = this.result.toString()
+                    } catch (e) {
+                        alert('表达式错误！')
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
